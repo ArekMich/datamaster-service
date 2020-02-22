@@ -12,7 +12,25 @@
     <artifactId>data-mining-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>data-mining-service</name>
-    <description>Demo project for Spring Boot</description>
+    <description>Service for data analysis an mining</description>
+
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <activatedProperties>dev</activatedProperties>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>prod</id>
+            <properties>
+                <activatedProperties>prod</activatedProperties>
+            </properties>
+        </profile>
+    </profiles>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
