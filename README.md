@@ -15,3 +15,5 @@ need to add it to path if its not added.
 
 ```java -jar -Dspring.profiles.active=prod target/data-mining-service-0.0.1-SNAPSHOT.jar```
 
+
+

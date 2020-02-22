@@ -1,4 +1,4 @@
-package com.agh.dataminingservice.contorller;
+package com.agh.dataminingservice.controller;
 
 import com.agh.dataminingservice.payload.ApiResponse;
 import com.agh.dataminingservice.exception.AppException;
