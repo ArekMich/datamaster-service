@@ -70,7 +70,7 @@ Response Status should be "200 OK" and body
 Key: Authorization
 Value: Bearer $ACCESS_TOKEN
 ``` 
-######$ACCESS_TOKEN is a value in body field "accessToken" from response: http://localhost:8090/api/auth/signin
+#####$ACCESS_TOKEN is a value in body field "accessToken" from response: http://localhost:8090/api/auth/signin
 ##### 4. Send Request
 ##### 5. Result
 Response Status should be "200 OK" and body 
