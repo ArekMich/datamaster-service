@@ -17,7 +17,12 @@ mvn -f pom.xml clean package
 java -jar -Dspring.profiles.active=prod target/data-mining-service-0.0.1-SNAPSHOT.jar
 ```
 
+
+
 ## REST API ENDPOINTS
+
+### SWAGGER-UI (Every endpoint and model)
+##### Run by adding swagger-ui.html to server URL (http://localhost:8090/swagger-ui.html) 
 
 ### How to sign up user:
 ##### 1. Http method: POST
