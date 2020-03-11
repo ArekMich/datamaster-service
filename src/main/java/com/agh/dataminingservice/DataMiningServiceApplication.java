@@ -1,6 +1,5 @@
 package com.agh.dataminingservice;
-
-import com.agh.dataminingservice.config.filestorage.FileStorageProperties;
+;
 import com.agh.dataminingservice.model.Role;
 import com.agh.dataminingservice.model.RoleName;
 import com.agh.dataminingservice.model.User;
@@ -11,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,9 +22,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @SpringBootApplication
-@EnableConfigurationProperties({
-        FileStorageProperties.class
-})
 @EntityScan(basePackageClasses = {
         DataMiningServiceApplication.class,
         Jsr310JpaConverters.class
