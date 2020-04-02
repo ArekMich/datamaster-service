@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
-public class DBFileStorageService {@
+public class DBFileStorageService {
 
     @Autowired
     private DBFileRepository dbFileRepository;
