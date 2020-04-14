@@ -7,14 +7,13 @@ import java.util.Set;
 
 @Getter
 @Setter
-public class UserRepositoryFilesId {
+public class UserRepositoryFiles {
 
     private String username;
+    private Set<FileDto> files;
 
-    private Set<String> filesId;
-
-    public UserRepositoryFilesId(String username, Set<String> filesId) {
+    public UserRepositoryFiles(String username, Set<FileDto> files) {
         this.username = username;
-        this.filesId = filesId;
+        this.files = files;
     }
 }

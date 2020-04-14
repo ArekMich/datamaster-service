@@ -3,8 +3,9 @@ package com.agh.dataminingservice.controller;
 import com.agh.dataminingservice.exception.ResourceNotFoundException;
 import com.agh.dataminingservice.model.DBFile;
 import com.agh.dataminingservice.model.User;
+import com.agh.dataminingservice.payload.FileDto;
 import com.agh.dataminingservice.payload.UploadFileResponse;
-import com.agh.dataminingservice.payload.UserRepositoryFilesId;
+import com.agh.dataminingservice.payload.UserRepositoryFiles;
 import com.agh.dataminingservice.repository.UserRepository;
 import com.agh.dataminingservice.security.CurrentUser;
 import com.agh.dataminingservice.security.UserPrincipal;
@@ -69,14 +70,14 @@ public class DBFileController {
                 .body(new ByteArrayResource(dbFile.getData()));
     }
 
-    @GetMapping("/filesID/{username}")
-    public ResponseEntity<UserRepositoryFilesId> getUserRepository(@PathVariable(value = "username") String username) {
+    @GetMapping("/files/{username}")
+    public ResponseEntity<UserRepositoryFiles> getUserRepository(@PathVariable(value = "username") String username) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "username", username));
 
         // Load files id from User Repository
-        Set<String> filesIdForUser = dbFileStorageService.getFilesIdForUser(user);
+        Set<FileDto> filesForUser = dbFileStorageService.getFilesForUser(user);
 
-        return ResponseEntity.ok( new UserRepositoryFilesId(username, filesIdForUser));
+        return ResponseEntity.ok( new UserRepositoryFiles(username, filesForUser));
     }
 }

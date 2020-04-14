@@ -4,6 +4,7 @@ import com.agh.dataminingservice.exception.FileStorageException;
 import com.agh.dataminingservice.exception.MyFileNotFoundException;
 import com.agh.dataminingservice.model.DBFile;
 import com.agh.dataminingservice.model.User;
+import com.agh.dataminingservice.payload.FileDto;
 import com.agh.dataminingservice.repository.DBFileRepository;
 import com.agh.dataminingservice.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +59,10 @@ public class DBFileStorageService {
                 .orElseThrow(() -> new MyFileNotFoundException("File not found with id " + fileId));
     }
 
-    public Set<String> getFilesIdForUser(User user){
-        return user.getDbFiles().stream().map(DBFile::getId).collect(Collectors.toSet());
+    public Set<FileDto> getFilesForUser(User user){
+        return user.getDbFiles().stream().map(dbFile -> FileDto.builder()
+                .id(dbFile.getId())
+                .fileName(dbFile.getFileName())
+                .fileType(dbFile.getFileType()).build()).collect(Collectors.toSet());
     }
 }
