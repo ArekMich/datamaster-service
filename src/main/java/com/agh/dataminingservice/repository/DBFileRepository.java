@@ -9,6 +9,4 @@ import java.util.List;
 
 @Repository
 public interface DBFileRepository extends JpaRepository<DBFile, String> {
-
-    List<DBFile> findByUser(User user);
 }
