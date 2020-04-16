@@ -53,7 +53,7 @@ public class User extends DateAudit {
     private Set<Role> roles = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY,
+            fetch = FetchType.EAGER,
             mappedBy = "user")
     private Set<DBFile> dbFiles = new HashSet<>();
 

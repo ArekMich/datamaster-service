@@ -60,9 +60,10 @@ public class DBFileStorageService {
     }
 
     public Set<FileDto> getFilesForUser(User user){
-        return user.getDbFiles().stream().map(dbFile -> FileDto.builder()
-                .id(dbFile.getId())
-                .fileName(dbFile.getFileName())
-                .fileType(dbFile.getFileType()).build()).collect(Collectors.toSet());
+        return dbFileRepository.findByUser(user).stream()
+                .map(dbFile -> FileDto.builder()
+                        .id(dbFile.getId())
+                        .fileName(dbFile.getFileName())
+                        .fileType(dbFile.getFileType()).build()).collect(Collectors.toSet());
     }
 }
