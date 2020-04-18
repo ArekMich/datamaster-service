@@ -59,10 +59,17 @@ public class DBFileStorageService {
                 .orElseThrow(() -> new MyFileNotFoundException("File not found with id " + fileId));
     }
 
-    public Set<FileDto> getFilesForUser(User user){
+    public Set<FileDto> getFiles(User user){
         return user.getDbFiles().stream().map(dbFile -> FileDto.builder()
                 .id(dbFile.getId())
                 .fileName(dbFile.getFileName())
                 .fileType(dbFile.getFileType()).build()).collect(Collectors.toSet());
+    }
+
+    public boolean deleteFile(String uuid){
+        dbFileRepository.deleteById(uuid);
+        boolean existsById = dbFileRepository.existsById(uuid);
+        boolean isDeletedSuccessfully = !existsById;
+        return isDeletedSuccessfully;
     }
 }

@@ -3,9 +3,7 @@ package com.agh.dataminingservice.controller;
 import com.agh.dataminingservice.exception.ResourceNotFoundException;
 import com.agh.dataminingservice.model.DBFile;
 import com.agh.dataminingservice.model.User;
-import com.agh.dataminingservice.payload.FileDto;
-import com.agh.dataminingservice.payload.UploadFileResponse;
-import com.agh.dataminingservice.payload.UserRepositoryFiles;
+import com.agh.dataminingservice.payload.*;
 import com.agh.dataminingservice.repository.UserRepository;
 import com.agh.dataminingservice.security.CurrentUser;
 import com.agh.dataminingservice.security.UserPrincipal;
@@ -35,7 +33,6 @@ public class DBFileController {
 
     @Autowired
     private DBFileStorageService dbFileStorageService;
-
     @Autowired
     private UserRepository userRepository;
 
@@ -76,8 +73,19 @@ public class DBFileController {
                 .orElseThrow(() -> new ResourceNotFoundException("User", "username", username));
 
         // Load files id from User Repository
-        Set<FileDto> filesForUser = dbFileStorageService.getFilesForUser(user);
+        Set<FileDto> filesForUser = dbFileStorageService.getFiles(user);
 
         return ResponseEntity.ok( new UserRepositoryFiles(username, filesForUser));
+    }
+
+    //example endpoint: http://localhost:8090/api/repository/delete?uuid=917d4ee5-000c-479b-b974-f1e4671716e9
+    @DeleteMapping("/delete")
+    public ResponseEntity<ApiResponse> deleteFileFromRepository(@RequestParam(value = "uuid") String uuid) {
+        boolean isFileDeletedSuccessfully = dbFileStorageService.deleteFile(uuid);
+
+        if (isFileDeletedSuccessfully) {
+            return ResponseEntity.ok(new ApiResponse(true, "File deleted successfully"));
+        }
+        return ResponseEntity.ok(new ApiResponse(false, "File deletion failed"));
     }
 }
