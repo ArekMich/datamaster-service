@@ -57,6 +57,11 @@ public class User extends DateAudit {
             mappedBy = "user")
     private Set<DBFile> dbFiles = new HashSet<>();
 
+    @OneToMany(cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY,
+            mappedBy = "user")
+    private Set<Report> reports = new HashSet<>();
+
     public User() {
     }
 
