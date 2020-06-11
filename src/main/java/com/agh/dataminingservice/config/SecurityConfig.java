@@ -74,21 +74,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(AUTH_WHITELIST)
                     .permitAll()
-                .antMatchers("/",
-                        "/favicon.ico",
-                        "/**/*.png",
-                        "/**/*.gif",
-                        "/**/*.svg",
-                        "/**/*.jpg",
-                        "/**/*.html",
-                        "/**/*.css",
-                        "/**/*.js")
-                    .permitAll()
                 .antMatchers("/api/auth/**")
                     .permitAll()
-                .antMatchers("/api/user/**", "/api/users/**")
-                    .permitAll()
-                .antMatchers("/api/files/**")
+                .antMatchers("/api/user/**")
                     .permitAll()
                 .anyRequest()
                     .authenticated();
