@@ -15,7 +15,4 @@ public interface DBFileRepository extends JpaRepository<DBFile, String> {
 
     @Query("SELECT NEW com.agh.dataminingservice.payload.FileDto(file.id, file.fileName, file.fileType) FROM DBFile file where file.user.id = :userId")
     Set<FileDto> findByUserId(@Param("userId") Long userId);
-
-    @Override
-    void deleteById(String uuid);
 }
