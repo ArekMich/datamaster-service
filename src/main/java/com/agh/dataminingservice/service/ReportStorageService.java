@@ -4,7 +4,6 @@ import com.agh.dataminingservice.exception.ReportNotFoundException;
 import com.agh.dataminingservice.exception.ReportsStorageException;
 import com.agh.dataminingservice.model.Report;
 import com.agh.dataminingservice.model.User;
-import com.agh.dataminingservice.payload.FileDto;
 import com.agh.dataminingservice.payload.ReportResponse;
 import com.agh.dataminingservice.payload.UploadReportsRequest;
 import com.agh.dataminingservice.repository.ReportRepository;

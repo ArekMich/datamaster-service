@@ -60,10 +60,7 @@ public class DBFileStorageService {
     }
 
     public Set<FileDto> getFiles(User user){
-        return user.getDbFiles().stream().map(dbFile -> FileDto.builder()
-                .id(dbFile.getId())
-                .fileName(dbFile.getFileName())
-                .fileType(dbFile.getFileType()).build()).collect(Collectors.toSet());
+        return dbFileRepository.findByUserId(user.getId());
     }
 
     public boolean deleteFile(String uuid){
