@@ -72,7 +72,7 @@ public class AuthController {
         }
 
         if(userRepository.existsByEmail(signUpRequest.getEmail())) {
-            return new ResponseEntity(new ApiResponse(false, "Email Address already in use!"),
+            return new ResponseEntity(new ApiResponse(false, "Email address already in use!"),
                     HttpStatus.BAD_REQUEST);
         }
 
