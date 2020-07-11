@@ -23,4 +23,13 @@ java -jar -Dspring.profiles.active=prod target/data-mining-service-0.0.1-SNAPSHO
 
 ### SWAGGER-UI (http://localhost:8090/swagger-ui.html)
 
+### Calling Protected APIs
 
+Once you’ve obtained the access token using the login API,
+ you can call any protected API by passing the accessToken in the Authorization 
+ header of the request like
+```
+Authorization: Bearer <accessToken>
+```
+ The JwtAuthenticationFilter will read the accessToken from the header, verify it, 
+ and allow/deny access to the API.

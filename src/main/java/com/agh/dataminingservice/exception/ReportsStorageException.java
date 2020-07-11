@@ -1,6 +1,12 @@
 package com.agh.dataminingservice.exception;
 
-public class ReportsStorageException extends RuntimeException{
+/**
+ * The server throw ReportsStorageException when problem occurs while storing report in database.
+ *
+ * @author Arkadiusz Michalik
+ * @see RuntimeException
+ */
+public class ReportsStorageException extends RuntimeException {
 
     public ReportsStorageException(String message) {
         super(message);

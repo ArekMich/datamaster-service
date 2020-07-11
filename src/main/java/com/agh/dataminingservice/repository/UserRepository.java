@@ -7,6 +7,13 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * UserRepository interface for persisting {@link User} model to the database, access and retrieving them.
+ * It extends Spring Data JPA’s {@link JpaRepository} interface.
+ *
+ * @author Arkadiusz Michalik
+ * @see JpaRepository
+ */
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 

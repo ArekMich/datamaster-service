@@ -19,16 +19,40 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * DBFileStorageService class responsible for processing file store and retrieve from database.
+ *
+ * @author Arkadiusz Michalik
+ * @see DBFileRepository
+ * @see UserRepository
+ */
 @Service
 @Transactional
 public class DBFileStorageService {
 
+    /**
+     * File repository.
+     */
     @Autowired
     private DBFileRepository dbFileRepository;
 
+    /**
+     * User repository.
+     */
     @Autowired
     private UserRepository userRepository;
 
+    /**
+     * Method responsible for store file in database. File will be connected to user account who save the file.
+     * Inside method there is a validation of file, path and user name.
+     * <p>
+     * If user name will be find in database and file is valid then file will be saved in database.
+     * In another case there will throw exception {@link FileStorageException}.
+     *
+     * @param file     File which will be saved in database.
+     * @param username Username (login) of user who want to save file.
+     * @return DBFile object with saved data from file.
+     */
     public DBFile storeFile(MultipartFile file, String username) {
         //Find User for save file to repository
         Optional<User> user = userRepository.findByUsername(username);
@@ -45,7 +69,7 @@ public class DBFileStorageService {
             if (user.isPresent()) {
                 DBFile dbFile = new DBFile(fileName, file.getContentType(), file.getBytes(), user.get());
                 return dbFileRepository.save(dbFile);
-            }else {
+            } else {
                 throw new FileStorageException("Sorry! User is not present with username: " + username);
             }
 
@@ -54,16 +78,36 @@ public class DBFileStorageService {
         }
     }
 
-    public DBFile getFile(String fileId){
+    /**
+     * Method will get file by file identifier from database via {@link DBFileRepository}.
+     *
+     * @param fileId File id which user want to download.
+     * @return File get from database by id.
+     */
+    public DBFile getFile(String fileId) {
         return dbFileRepository.findById(fileId)
                 .orElseThrow(() -> new MyFileNotFoundException("File not found with id " + fileId));
     }
 
-    public Set<FileDto> getFiles(User user){
+    /**
+     * Method responsible for finding files by user id and returns set of {@link FileDto}.
+     *
+     * @param user User whom files will be get from database as a set of FileDtos.
+     * @return Set of {@link FileDto}s which contains information about files saved in database on user account.
+     */
+    public Set<FileDto> getFiles(User user) {
         return dbFileRepository.findByUserId(user.getId());
     }
 
-    public boolean deleteFile(String uuid){
+    /**
+     * Method deletes file by uuid, which is file identifier.
+     * If file exist it will be deleted successful and method return true.
+     * In another case method will return false what means that file is not deleted successful.
+     *
+     * @param uuid File identifier.
+     * @return True when file deleted successful. False in another case.
+     */
+    public boolean deleteFile(String uuid) {
         dbFileRepository.deleteById(uuid);
         boolean existsById = dbFileRepository.existsById(uuid);
         boolean isDeletedSuccessfully = !existsById;

@@ -29,6 +29,11 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.util.Collections;
 
+/**
+ * Rest API for user login and registration.
+ *
+ * @author Arkadiusz Michalik
+ */
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -48,6 +53,15 @@ public class AuthController {
     @Autowired
     JwtTokenProvider tokenProvider;
 
+    /**
+     * Endpoint method responsible for authentication user.
+     * <p>
+     * If user successful sign in then method generate JSON Web Token with appropriate properties put in a jwt subject
+     * like user principal values i.e. roles, id, username etc.
+     *
+     * @param loginRequest RequestBody object which accept username and also email to authenticate user.
+     * @return Json Web Token needed for authorization.
+     */
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
@@ -64,14 +78,24 @@ public class AuthController {
         return ResponseEntity.ok(new JwtAuthenticationResponse(jwt));
     }
 
+    /**
+     * Endpoint method responsible for register user.
+     * <p>
+     * If user send in request body {@link SignUpRequest} object with correctly filled fields then user get information
+     * that account create successful. It is possible that username or email exist, so in this case application gives
+     * response to client that he need to change this values.
+     *
+     * @param signUpRequest RequestBody object which gives information about user information to register.
+     * @return ApiResponse object inside ResponseEntity which inform client if registration ended successful or not.
+     */
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
-        if(userRepository.existsByUsername(signUpRequest.getUsername())) {
+        if (userRepository.existsByUsername(signUpRequest.getUsername())) {
             return new ResponseEntity(new ApiResponse(false, "Username is already taken!"),
                     HttpStatus.BAD_REQUEST);
         }
 
-        if(userRepository.existsByEmail(signUpRequest.getEmail())) {
+        if (userRepository.existsByEmail(signUpRequest.getEmail())) {
             return new ResponseEntity(new ApiResponse(false, "Email address already in use!"),
                     HttpStatus.BAD_REQUEST);
         }

@@ -10,12 +10,14 @@ import org.springframework.stereotype.Component;
 import java.util.Date;
 
 /**
- *  Utility class for generating and verifying JWT
+ * Utility class for generating and verifying JWT.
+ * <p>
+ * The following utility class is used for generating a JWT after a user logs in successfully
+ * and validating the JWT sent in the Authorization header of the requests.
+ * <p>
+ * The utility class reads the JWT secret and expiration time from application.properties file.
  *
- *  The following utility class will be used for generating a JWT after a user logs in successfully,
- *  and validating the JWT sent in the Authorization header of the requests
- *
- *  The utility class reads the JWT secret and expiration time from application.properties
+ * @author Arkadiusz Michalik
  */
 
 @Component
@@ -29,6 +31,14 @@ public class JwtTokenProvider {
     @Value("${app.jwtExpirationInMs}")
     private int jwtExpirationInMs;
 
+    /**
+     * Method which generate JSON Web Token with appropriate properties.
+     *
+     * @param authentication Represents the token for an authentication request or for an authenticated principal
+     *                       once the request has been processed by the AuthenticationManager.authenticate(Authentication)
+     *                       method.
+     * @return Returns created jwt token with the appropriate properties.
+     */
     public String generateToken(Authentication authentication) {
 
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
@@ -44,6 +54,12 @@ public class JwtTokenProvider {
                 .compact();
     }
 
+    /**
+     * Method pulls out user id saved in JWT token.
+     *
+     * @param token JWT token.
+     * @return User id stored in jwt token.
+     */
     public Long getUserIdFromJWT(String token) {
         Claims claims = Jwts.parser()
                 .setSigningKey(jwtSecret)
@@ -53,6 +69,12 @@ public class JwtTokenProvider {
         return Long.parseLong(claims.getSubject());
     }
 
+    /**
+     * Validation of the token in terms of correctness.
+     *
+     * @param authToken Authorization token retrieved from header request.
+     * @return true when token is valid. False in another case.
+     */
     public boolean validateToken(String authToken) {
         try {
             Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);

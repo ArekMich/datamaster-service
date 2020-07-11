@@ -6,6 +6,13 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+/**
+ * SignUp payload request.
+ * Client sends signup payload requests with user information for registration.
+ * Every field in this payload is required.
+ *
+ * @author Arkadiusz Michalik
+ */
 @Data
 public class SignUpRequest {
 
@@ -26,6 +33,6 @@ public class SignUpRequest {
     private String email;
 
     @NotBlank(message = "Field with password could not be blank.")
-    @Size(min = 6, max = 20,  message = "Number of characters in password is incorrect. The intended range is between 6 and 20 chars.")
+    @Size(min = 6, max = 20, message = "Number of characters in password is incorrect. The intended range is between 6 and 20 chars.")
     private String password;
 }

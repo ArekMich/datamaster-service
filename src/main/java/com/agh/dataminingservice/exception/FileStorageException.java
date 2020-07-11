@@ -1,6 +1,12 @@
 package com.agh.dataminingservice.exception;
 
-public class FileStorageException extends RuntimeException{
+/**
+ * The server throw FileStorageException when problem occurs while storing file in database.
+ *
+ * @author Arkadiusz Michalik
+ * @see RuntimeException
+ */
+public class FileStorageException extends RuntimeException {
 
     public FileStorageException(String message) {
         super(message);

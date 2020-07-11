@@ -11,6 +11,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.Optional;
 
+/**
+ * Configuration class to automatically populate the createdBy and updatedBy fields from
+ * {@link com.agh.dataminingservice.model.audit.UserDateAudit}
+ *
+ * @author Arkadiusz Michalik
+ * @see com.agh.dataminingservice.model.audit.UserDateAudit
+ */
 @Configuration
 @EnableJpaAuditing
 public class AuditingConfig {
@@ -20,8 +27,11 @@ public class AuditingConfig {
         return new SpringSecurityAuditAwareImpl();
     }
 
-    class SpringSecurityAuditAwareImpl implements AuditorAware<Long> {
+    static class SpringSecurityAuditAwareImpl implements AuditorAware<Long> {
 
+        /**
+         * @return ID of the currently logged in user.
+         */
         @Override
         public Optional<Long> getCurrentAuditor() {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

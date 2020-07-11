@@ -12,6 +12,12 @@ import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * User class stores user information.
+ *
+ * @author Arkadiusz Michalik
+ * @see DateAudit
+ */
 @Getter
 @Setter
 @Entity
@@ -62,9 +68,20 @@ public class User extends DateAudit {
             mappedBy = "user")
     private Set<Report> reports = new HashSet<>();
 
+    /**
+     * Creates an empty user object.
+     */
     public User() {
     }
 
+    /**
+     * Creates a completed user object.
+     *
+     * @param name     User's first and last name.
+     * @param username User login.
+     * @param email    User email.
+     * @param password User password.
+     */
     public User(String name, String username, String email, String password) {
         this.name = name;
         this.username = username;

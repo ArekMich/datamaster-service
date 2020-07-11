@@ -14,29 +14,35 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-
 /**
- * In UserController, We’ll be writing APIs to -
+ * Rest API for getting the currently logged in user, checking if a username is available for registration,
+ * checking if an email is available for registration and getting user profile.
  *
- * Get the currently logged in user.
- * Check if a username is available for registration.
- * Check if an email is available for registration.
- * Get the public profile of a user.
+ * @author Arkadiusz Michalik
  */
-
 @RestController
 @RequestMapping("/api")
 public class UserController {
 
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
+    /**
+     * User repository.
+     */
     @Autowired
     private UserRepository userRepository;
 
-    //example endpoint: http://localhost:8090/api/user/me
-    //Key: Authorization
-    //Value: Bearer $ACCESS_TOKEN
-    //$ACCESS_TOKEN is a value in body field "accessToken" from response: http://localhost:8090/api/auth/signin
+    /**
+     * Endpoint method responsible for returning information about currently log in user.
+     * <p>
+     * Method uses annotation {@link CurrentUser} which gives access the currently authenticated user.
+     * In that fact client don't need to put other information in request body.
+     * <p>
+     * Access to method has only authorize clients with role {@link com.agh.dataminingservice.model.RoleName#ROLE_USER}.
+     *
+     * @param currentUser Currently authenticated user in application.
+     * @return User summary object only with major information about him.
+     */
     @GetMapping("/user/me")
     @PreAuthorize("hasRole('USER')")
     public UserSummary getCurrentUser(@CurrentUser UserPrincipal currentUser) {
@@ -44,21 +50,48 @@ public class UserController {
         return userSummary;
     }
 
-    //example endpoint: http://localhost:8090/api/user/checkUsernameAvailability?username=arekmich
+    /**
+     * Endpoint method responsible for checking if username is available.
+     * <p>
+     * If username exist in database method send response to client that user identity is not available.
+     * In another case client get information in object {@link UserIdentityAvailability} that username is available.
+     *
+     * @param username Username value which client wants to use for registration.
+     * @return {@link UserIdentityAvailability } object with boolean value "available". If "available" is set to true,
+     * it means that username does not exist in database. In another case "available" value is set to false.
+     */
     @GetMapping("/user/checkUsernameAvailability")
     public UserIdentityAvailability checkUsernameAvailability(@RequestParam(value = "username") String username) {
         Boolean isAvailable = !userRepository.existsByUsername(username);
         return new UserIdentityAvailability(isAvailable);
     }
 
-    //example endpoint: http://localhost:8090/api/user/checkEmailAvailability?email=arkadiusz.michalik@gmail.com
+    /**
+     * Endpoint method responsible for checking if email is available.
+     * <p>
+     * If email exist in database method send response to client that user identity is not available.
+     * In another case client get information in object {@link UserIdentityAvailability} that email is available.
+     *
+     * @param email Email value which client wants to use for registration.
+     * @return {@link UserIdentityAvailability } object with boolean value "available". If "available" is set to true,
+     * it means that email does not exist in database. In another case "available" value is set to false.
+     */
     @GetMapping("/user/checkEmailAvailability")
     public UserIdentityAvailability checkEmailAvailability(@RequestParam(value = "email") String email) {
         Boolean isAvailable = !userRepository.existsByEmail(email);
         return new UserIdentityAvailability(isAvailable);
     }
 
-    //example endpoint: http://localhost:8090/api/users/arekmich
+    /**
+     * Endpoint method responsible for returning information about selected user.
+     * <p>
+     * When user exist in database searched by username, method create {@link UserProfile} object response with major
+     * and basic information about him like identifier, username, first and last name also additional information is date
+     * when user account was created.
+     *
+     * @param username User name value.
+     * @return {@link UserProfile} object with major information about searched user.
+     */
     @GetMapping("/users/{username}")
     public UserProfile getUserProfile(@PathVariable(value = "username") String username) {
         User user = userRepository.findByUsername(username)
