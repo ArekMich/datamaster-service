@@ -127,6 +127,24 @@ public class DBFileController {
     }
 
     /**
+     * Endpoint method responsible for downloading User Guide Document.
+     * <p>
+     * Everyone has access to the document without authentication and authorization.
+     *
+     * @return User guide document saved as pdf content type.
+     */
+    @GetMapping("/userGuide")
+    public ResponseEntity<Resource> downloadUserGuide() {
+        // Load file as Resource
+        DBFile dbFile = dbFileStorageService.getUserGuideDocument();
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(dbFile.getFileType()))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + dbFile.getFileName() + "\"")
+                .body(new ByteArrayResource(dbFile.getData()));
+    }
+
+    /**
      * Endpoint method responsible for deleting file from repository by uui, which is file identifier.
      * <p>
      * If file will be deleted successful then method return value Success set to true and information message
