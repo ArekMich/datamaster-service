@@ -30,6 +30,8 @@ import java.util.stream.Collectors;
 @Transactional
 public class DBFileStorageService {
 
+    private static final String USER_GUIDE_DOCUMENT = "podr_uzytkownika.pdf";
+
     /**
      * File repository.
      */
@@ -87,6 +89,14 @@ public class DBFileStorageService {
     public DBFile getFile(String fileId) {
         return dbFileRepository.findById(fileId)
                 .orElseThrow(() -> new MyFileNotFoundException("File not found with id " + fileId));
+    }
+
+    /**
+     * @return User guide document saved in database as {@link DBFile} object.
+     */
+    public DBFile getUserGuideDocument() {
+        return dbFileRepository.findByFileName(USER_GUIDE_DOCUMENT)
+                .orElseThrow(() -> new MyFileNotFoundException("File not found with name " + USER_GUIDE_DOCUMENT));
     }
 
     /**
